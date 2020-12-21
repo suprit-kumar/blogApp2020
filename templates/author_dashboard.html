@@ -1,0 +1,46 @@
+{% extends 'dashboard_layout.html' %}
+{% load static %}
+{% block title %}IVR - Dashboard {% endblock %}
+
+{% block hscripts %}
+
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="container-fluid">
+        <div class="row mt-3">
+            <div class="col-md-5">
+                <h5 class="btn btn-sm btn-primary">Add Blog</h5><br><br>
+                <input type="hidden" id="hidden_blog_id" value="">
+                <div class="form-group">
+                    <label>Blog Title</label>
+                    <span class="mandatory" style="color: red">*</span>
+                    <input type="text" class="form-control" id="blog_title">
+                </div>
+                <div class="form-group">
+                    <label>Blog Content</label>
+                    <span class="mandatory" style="color: red">*</span>
+                    <textarea class="form-control rounded-0" rows="7" id="blog_content"
+                              placeholder="Write your blog......"></textarea>
+                </div>
+
+                <button class="btn btn-sm btn-success" style="float: right;top: 12px" id="save_blog">Save</button>
+            </div>
+            <div class="col-md-7">
+                <h5 class="btn btn-sm btn-primary">My Added Blogs</h5><br><br>
+                <div id="my_blogs">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block fscripts %}
+    <script type="text/javascript" src="{% static 'logic/author_dashboard.js' %}"></script>
+{% endblock %}

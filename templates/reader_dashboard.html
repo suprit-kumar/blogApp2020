@@ -1,0 +1,31 @@
+{% extends 'dashboard_layout.html' %}
+{% load static %}
+{% block title %}IVR - Dashboard {% endblock %}
+
+{% block hscripts %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="btn btn-sm btn-primary">Blogs</h5><br><br>
+                <div id="blogs">
+
+                </div>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block fscripts %}
+    <script type="text/javascript" src="{% static 'logic/reader_dashboard.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- MDB icon -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{% static 'mdbootstrap/css/bootstrap.min.css' %}">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="{% static 'mdbootstrap/css/mdb.min.css' %}">
+    <!-- Your custom styles (optional) -->
+    <link rel="stylesheet" href="{% static 'mdbootstrap/css/style.css' %}">
+    <!-- MDBootstrap Datatables  -->
+    <link rel="stylesheet" href="{% static 'mdbootstrap/css/addons/datatables.min.css' %}">
+    <title>{% block title %}{% endblock %} </title>
+    {% block hscripts %}
+
+    {% endblock %}
+</head>
+<body>
+<!-- Navbar -->
+<nav class="mb-1 navbar navbar-expand-sm #2962ff blue accent-4">
+    <a class="navbar-brand" href="javascript:void(0)" style="color: white">{% if type == 'AUTHOR' %}Author
+        Dashboard {% else %} Reader Dashboard {% endif %}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+            aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
+        <ul class="navbar-nav ml-auto nav-flex-icons">
+            <li class="nav-item">
+                <a class="nav-link waves-effect waves-light" style="color: white">
+                    {{ details.0.useremail }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link waves-effect waves-light" style="color: white" href="{% url 'logout' %}">
+                    <i class="fa fa-power-off" aria-hidden="true" style="font-size: 25px"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+{% block content %}  {% endblock %}
+
+
+
+
+<script type="text/javascript" src="{% static 'mdbootstrap/js/jquery.min.js' %}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="{% static 'mdbootstrap/js/popper.min.js' %}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="{% static 'mdbootstrap/js/bootstrap.min.js' %}"></script>
+<!-- MDBootstrap Datatables  -->
+<script type="text/javascript" src="{% static 'mdbootstrap/js/addons/datatables.min.js' %}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="{% static 'mdbootstrap/js/mdb.min.js' %}"></script>
+<!-- Your custom scripts (optional) -->
+<script type="text/javascript" src="{% static 'sweetalert/sweetalert.min.js' %}"></script>
+{% block fscripts %}
+{% endblock %}
+</body>
+</html>

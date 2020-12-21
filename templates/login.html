@@ -1,0 +1,37 @@
+{% extends 'form_layout.html' %}
+{% load static %}
+{% block title %}Login {% endblock %}
+
+{% block hscripts %}
+
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="login-form">
+        <div class="form-container">
+            {% csrf_token %}
+            <div class="form-element">
+                <label class="fa fa-user" for="email_input"></label>
+                <input type="email" id="email_input"
+                       placeholder="Username">
+            </div>
+            <div class="form-element">
+                <label class="fa fa-key" for="pwd_input"></label>
+                <input type="password" id="pwd_input"
+                       placeholder="Password">
+            </div>
+            <div class="form-element">
+                <button id="signInBtn">Login</button>
+            </div>
+            <p style="color:white;">New User ?<a href="{% url 'signup' %}">Register</a></p>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block fscripts %}
+    <script type="text/javascript" src="{% static 'logic/login.js' %}"></script>
+{% endblock %}
