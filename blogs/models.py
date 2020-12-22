@@ -52,6 +52,9 @@ class Blog(models.Model):
     created_time = models.DateTimeField(auto_now_add=True, null=True)
     modified_time = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     m_time = models.CharField(max_length=100, null=True, default="")
+    count_likes = models.IntegerField(default=0)
+    count_dislikes = models.IntegerField(default=0)
+    count_comments = models.IntegerField(default=0)
 
     class Meta:
         db_table = "blog"
@@ -66,7 +69,8 @@ class Comment(models.Model):
     reader_id = models.ForeignKey(BlogReader, on_delete=models.CASCADE)
     comment_text = models.TextField(max_length=2500, null=True, default="")
     created_time = models.DateTimeField(auto_now_add=True, blank=True)
-    modified_time = models.DateTimeField(auto_now_add=True, blank=True)
+    modified_time = models.DateTimeField(auto_now_add=False, null=True, blank=True,)
+    m_time = models.CharField(max_length=100, null=True, default="")
 
     class Meta:
         db_table = "comment"

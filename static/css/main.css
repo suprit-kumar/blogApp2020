@@ -1,9 +1,31 @@
 .fa {
-  font-size: 24px;
-  cursor: pointer;
-  user-select: none;
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
 }
 
 .fa:hover {
-  color: darkblue;
+    color: darkblue;
+}
+
+.info-cls {
+    height: 100px;
+    /*background-color: red;*/
+
+    position: sticky;
+    top: 40%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}
+
+.form-check-input {
+    margin-left: -1.0rem;
+}
+
+.ibtn {
+    float: right;
+    top: 12px
 }

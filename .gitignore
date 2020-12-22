@@ -1,0 +1,7 @@
+.idea
+*.log
+*.pyc
+workspace.xml
+blogs/__pycache__/*
+BlogPostProject/__pycache__/*
+__pycache__/*

@@ -4,6 +4,9 @@ $(document).ready(function () {
         createNewBlog();
     });
 
+    $('#top_five_cmnt_blogs').click(function () {
+        fetchTopFiveCommentedBlogs();
+    });
 });
 
 
@@ -57,7 +60,8 @@ function fetchMyAddedBlogs() {
                 response.author_blogs.forEach(function (blog) {
                     const blogs = "<div class='card'>" +
                         "<div class='card-body'>" +
-                        "<h5 class='card-title'>" + blog.blog_name + "</h5><p>Last Updated:  " + blog.m_time + "</p>" +
+                        "<h5 class='card-title'>" + blog.blog_name + "<span style='float: right;font-size: 17px'><a href='javascript:void(0)'><i class='fa fa-thumbs-up' aria-hidden='true'></i> " + blog.count_likes + "</a>" + '  ' + "<a href='javascript:void(0)'><i class='fa fa-thumbs-down' aria-hidden='true'></i>: " + blog.count_dislikes + "</a>" + '  ' + "<a href='javascript:void(0)'><i class='fa fa-comments' aria-hidden='true'></i> " + blog.count_comments + "</a></span></h5>" +
+                        "<p>Last Updated:  " + blog.m_time + "</p>" +
                         "<p class='card-text'>" + blog.blog_content + "</p>" +
                         "</div>" +
                         "</div><br>";
@@ -76,4 +80,30 @@ function fetchMyAddedBlogs() {
 
 function resetInputFields() {
     $('#hidden_blog_id,#blog_title,#blog_content').val('');
+}
+
+
+function fetchTopFiveCommentedBlogs() {
+    $.ajax({
+        type: 'POST',
+        url: '/fetch_top_five_commented_blogs/',
+        success: function (response) {
+            if (response.result === 'success') {
+                $('#cmnt_blogs').empty();
+                response.topFiveCommentedBlogs.forEach(function (blog) {
+                    const blogs = "<li class='list-group-item'><b>Blog Title: " + blog.blog_name + "</b></li>";
+                    $('#cmnt_blogs').append(blogs);
+                });
+            } else if (response.result === 'failed') {
+                swal(response.msg);
+            }
+        }, error: function (error) {
+            console.log('Error in fetchTopFiveCommentedBlogs function -->', error);
+        }
+    })
+}
+
+
+function topFiveLikedDislikedBlogs() {
+
 }

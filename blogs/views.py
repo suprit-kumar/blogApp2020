@@ -1,5 +1,6 @@
 import re
 
+from django.db.models import Count
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 import datetime
@@ -41,8 +42,6 @@ def login_operation(request):
             return JsonResponse(response_msg)
         else:
             return JsonResponse({"result": "Invalid", "msg": "Invalid Username."})
-
-
     except Exception as e:
         print("Exception in login_operation views.py-->", e)
         return JsonResponse({"result": "error", "msg": "Opps!, Server error while login"})
@@ -180,7 +179,10 @@ def author_blogs(request):
                 author = models.BlogAuthor.objects.get(author_usercode=user_code)
                 author_blogs = list(
                     models.Blog.objects.filter(author_id=author.author_id).values('blog_id', 'blog_name', 'm_time',
-                                                                                  'blog_content'))
+                                                                                  'count_likes', 'count_dislikes',
+                                                                                  'count_comments',
+                                                                                  'blog_content').order_by(
+                        '-created_time'))
                 return JsonResponse({'result': 'success', 'author_blogs': author_blogs})
     except Exception as e:
         print('Exception in save_blog views.py -->', e)
@@ -192,10 +194,186 @@ def fetch_all_blogs(request):
     try:
         if 'usercode' in request.session:
             if request.method == 'POST':
-                blogs = list(models.Blog.objects.all().values('blog_id', 'blog_name', 'm_time','author_id__author_name',
-                                                              'blog_content'))
+                blogs = list(
+                    models.Blog.objects.all().values('blog_id', 'blog_name', 'm_time', 'author_id__author_name',
+                                                     'count_likes', 'count_dislikes',
+                                                     'blog_content').order_by('-created_time'))
 
                 return JsonResponse({'result': 'success', 'blogs': blogs})
     except Exception as e:
         print('Exception in fetch_all_blogs views.py -->', e)
         return JsonResponse({'result': 'failed', 'msg': 'Failed to load blogs! Refresh the page'})
+
+
+@csrf_exempt
+def update_blog_like_dislike(request):
+    try:
+        if 'usercode' in request.session:
+            user_code = request.session['usercode']
+
+            if request.method == 'POST':
+                id = request.POST['id']
+                value = request.POST['value']
+                if id != '':
+                    bool_value = str_to_bool(value)
+                    reader_obj = models.BlogReader.objects.get(reader_usercode=user_code)
+                    check_response_exist = models.Response.objects.filter(blog_id=int(id),
+                                                                          reader_id=reader_obj.reader_id).exists()
+                    if check_response_exist is True:
+                        models.Response.objects.filter(blog_id=int(id), reader_id=reader_obj.reader_id).update(
+                            blog_id=models.Blog.objects.get(
+                                blog_id=int(id)), reader_id=models.BlogReader.objects.get(
+                                reader_usercode=user_code), like_or_not=bool_value)
+                    elif check_response_exist is False:
+                        models.Response.objects.create(blog_id=models.Blog.objects.get(
+                            blog_id=int(id)), reader_id=models.BlogReader.objects.get(
+                            reader_usercode=user_code), like_or_not=bool_value)
+
+                    fetch_like_dislikes_count = list(models.Response.objects.all().values('blog_id').distinct())
+
+                    for data in fetch_like_dislikes_count:
+                        likes = models.Response.objects.filter(blog_id=data['blog_id'], like_or_not=True).count()
+                        dislikes = models.Response.objects.filter(blog_id=data['blog_id'], like_or_not=False).count()
+                        models.Blog.objects.filter(blog_id=data['blog_id']).update(count_likes=likes)
+                        models.Blog.objects.filter(blog_id=data['blog_id']).update(count_dislikes=dislikes)
+
+                    return JsonResponse({'result': 'success'})
+                else:
+                    return JsonResponse({'result': 'failed'})
+    except Exception as e:
+        print('Exception in update_blog_like_dislike views.py -->', e)
+        return JsonResponse({'result': 'failed'})
+
+
+@csrf_exempt
+def save_reader_comments(request):
+    try:
+        if 'usercode' in request.session:
+            user_code = request.session['usercode']
+            if request.method == 'POST':
+                id = request.POST['id']
+                comment = request.POST['comment']
+
+                if id and comment:
+                    models.Comment.objects.create(blog_id=models.Blog.objects.get(
+                        blog_id=id), reader_id=models.BlogReader.objects.get(
+                        reader_usercode=user_code), comment_text=comment)
+
+                    blog_comment_count = models.Comment.objects.filter(
+                        blog_id=models.Blog.objects.get(blog_id=id)).count()
+
+                    models.Blog.objects.filter(blog_id=id).update(
+                        count_comments=blog_comment_count)
+
+                    return JsonResponse({'result': 'success', 'msg': 'Comments added'})
+    except Exception as e:
+        print('Exception in save_reader_comments views.py -->', e)
+        return JsonResponse({'result': 'failed', 'msg': 'Failed to add comments'})
+
+
+@csrf_exempt
+def recent_five_liked_blogs(request):
+    try:
+        if 'usercode' in request.session:
+            user_code = request.session['usercode']
+            if request.method == 'POST':
+                blogs = list(models.Response.objects.filter(like_or_not=True, reader_id=models.BlogReader.objects.get(
+                    reader_usercode=user_code)).values('blog_id__blog_name').order_by('-response_time')[:5])
+                return JsonResponse({'result': 'success', 'blogs': blogs})
+    except Exception as e:
+        print('Exception in recent_five_liked_blogs views.py -->', e)
+        return JsonResponse({'result': 'failed', 'msg': 'Failed to load liked blogs! Refresh the page and try again'})
+
+
+@csrf_exempt
+def my_commented_blogs(request):
+    try:
+        if 'usercode' in request.session:
+            user_code = request.session['usercode']
+            if request.method == 'POST':
+                commented_blogs = list(models.Comment.objects.filter(reader_id=models.BlogReader.objects.get(
+                    reader_usercode=user_code)).values('blog_id', 'blog_id__blog_name').distinct('blog_id__blog_name'))
+                return JsonResponse({'result': 'success', 'commented_blogs': commented_blogs})
+    except Exception as e:
+        print('Exception in recent_five_liked_blogs views.py -->', e)
+        return JsonResponse({'result': 'failed', 'msg': 'Failed to load blogs! Refresh the page and try again'})
+
+
+@csrf_exempt
+def my_comment_histroy(request):
+    try:
+        if 'usercode' in request.session:
+            user_code = request.session['usercode']
+            if request.method == 'POST':
+                blogId = request.POST['blogId']
+                if blogId:
+                    comments = list(models.Comment.objects.filter(blog_id=models.Blog.objects.get(blog_id=int(blogId)),
+                                                                  reader_id=models.BlogReader.objects.get(
+                                                                      reader_usercode=user_code)).values(
+                        'comment_text'))
+                    return JsonResponse({'result': 'success', 'comments': comments})
+    except Exception as e:
+        print('Exception in recent_five_liked_blogs views.py -->', e)
+        return JsonResponse({'result': 'failed', 'msg': 'Failed to load comments! Refresh the page and try again'})
+
+
+@csrf_exempt
+def my_commented_blog_authors(request):
+    try:
+        if 'usercode' in request.session:
+            user_code = request.session['usercode']
+            if request.method == 'POST':
+                authorsList = list(models.Comment.objects.filter(reader_id=models.BlogReader.objects.get(
+                    reader_usercode=user_code)).values('blog_id__author_id__author_name',
+                                                       'blog_id__author_id').distinct())
+                return JsonResponse({'result': 'success', 'authorsList': authorsList})
+    except Exception as e:
+        print('Exception in my_commented_blog_authors views.py -->', e)
+        return JsonResponse({'result': 'failed', 'msg': 'Failed to load authors! Refresh the page and try again'})
+
+
+@csrf_exempt
+def fetch_my_comment_history_for_author(request):
+    try:
+        if 'usercode' in request.session:
+            user_code = request.session['usercode']
+            if request.method == 'POST':
+                authorId = request.POST['authorId']
+                if authorId:
+                    auhtorblogs = list(models.Blog.objects.values_list('blog_id', flat=True).filter(
+                        author_id=models.BlogAuthor.objects.get(
+                            author_id=int(authorId))))
+                    my_all_commented_blogs = list(models.Comment.objects.values_list('blog_id', flat=True).filter(
+                        reader_id=models.BlogReader.objects.get(
+                            reader_usercode=user_code)))
+                    my_coomented_blogs_of_author = intersection(auhtorblogs, my_all_commented_blogs)
+
+                    blog_comments = list(models.Comment.objects.filter(blog_id__in=my_coomented_blogs_of_author).values(
+                        'blog_id__blog_name', 'comment_text'))
+                    return JsonResponse({'result': 'success', 'blog_comments': blog_comments})
+    except Exception as e:
+        print('Exception in fetch_my_comment_history_for_author views.py -->', e)
+        return JsonResponse({'result': 'failed', 'msg': 'Failed to load comments! Refresh the page and try again'})
+
+
+@csrf_exempt
+def fetch_top_five_commented_blogs(request):
+    try:
+        if 'usercode' in request.session:
+            user_code = request.session['usercode']
+            if request.method == 'POST':
+                fetch_all_commented_blogs_count = list(
+                    models.Blog.objects.filter(author_id=models.BlogAuthor.objects.get(
+                        author_usercode=user_code)).exclude(count_comments=0).values_list('count_comments', flat=True))
+
+                print('fetch_all_commented_blogs_count-->', fetch_all_commented_blogs_count)
+                fetch_all_commented_blogs_count.sort()
+                n = 5
+                top_five_counts = fetch_all_commented_blogs_count[-n:]
+                fetch_top_five_blogs_title = list(models.Blog.objects.filter(author_id=models.BlogAuthor.objects.get(
+                    author_usercode=user_code), count_comments__in=top_five_counts).values('blog_name'))
+
+                return JsonResponse({'result': 'success', 'topFiveCommentedBlogs': fetch_top_five_blogs_title})
+    except Exception as e:
+        print('Exception in fetch_top_five_commented_blogs views.py -->', e)
+        return JsonResponse({'result': 'failed', 'msg': 'Failed to load comments! Refresh the page and try again'})

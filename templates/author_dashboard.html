@@ -1,12 +1,75 @@
 {% extends 'dashboard_layout.html' %}
 {% load static %}
-{% block title %}IVR - Dashboard {% endblock %}
+{% block title %}Author - Dashboard {% endblock %}
 
 {% block hscripts %}
 
 {% endblock %}
 
 {% block content %}
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="fiveLikedDislikedBlogModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg  modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Top 5 Liked & disliked Blogs</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Liked Blogs</h6>
+                            <ul class="list-group" id="like_blog">
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Disliked Blogs</h6>
+                            <ul class="list-group" id="dislike_blog">
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="topfiveCommentedBlogs" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg  modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Top 5 commented Blogs</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group" id="cmnt_blogs">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="readerCommentedBlogs" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg  modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">List of Blogs which a reader commented</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group" id="">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="container-fluid">
@@ -27,6 +90,18 @@
                 </div>
 
                 <button class="btn btn-sm btn-success" style="float: right;top: 12px" id="save_blog">Save</button>
+                <br><br><br>
+
+                <a class="btn btn-sm btn-info ibtn" data-toggle="modal"
+                   data-target="#topfiveCommentedBlogs" id="top_five_cmnt_blogs">Top 5 commented Blogs
+                </a>
+                <a class="btn btn-sm btn-info ibtn" data-toggle="modal"
+                   data-target="#fiveLikedDislikedBlogModal" id="top_five_like_dislike_blog">Top 5 Liked & disliked
+                    Blogs
+                </a>
+                <a class="btn btn-sm btn-info ibtn" data-toggle="modal"
+                   data-target="#readerCommentedBlogs" id="reader_cmnt_blogs">List of Blogs which a reader commented
+                </a>
             </div>
             <div class="col-md-7">
                 <h5 class="btn btn-sm btn-primary">My Added Blogs</h5><br><br>
