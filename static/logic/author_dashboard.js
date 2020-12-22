@@ -7,6 +7,15 @@ $(document).ready(function () {
     $('#top_five_cmnt_blogs').click(function () {
         fetchTopFiveCommentedBlogs();
     });
+
+    $('#top_five_like_dislike_blog').click(function () {
+        topFiveLikedDislikedBlogs();
+    });
+
+    $('#reader_cmnt_blogs').click(function () {
+        fetchReaderCommentedBlogs();
+    });
+
 });
 
 
@@ -105,5 +114,46 @@ function fetchTopFiveCommentedBlogs() {
 
 
 function topFiveLikedDislikedBlogs() {
+    $.ajax({
+        type: 'POST',
+        url: '/fetch_top_five_like_disliked_blogs/',
+        success: function (response) {
+            if (response.result === 'success') {
+                $('#like_blogs,#dislike_blogs').empty();
+                response.topFivelikedBlogs.forEach(function (liked) {
+                    const likedBlogs = "<li class='list-group-item'><b>Blog Title: " + liked.blog_name + "</b></li>";
+                    $('#like_blogs').append(likedBlogs);
+                });
+                response.topFiveDislikedBlogs.forEach(function (disliked) {
+                    const dislikedBlogs = "<li class='list-group-item'><b>Blog Title: " + disliked.blog_name + "</b></li>";
+                    $('#dislike_blogs').append(dislikedBlogs);
+                });
+            } else if (response.result === 'failed') {
+                swal(response.msg);
+            }
+        }, error: function (error) {
+            console.log('Error in fetchTopFiveCommentedBlogs function -->', error);
+        }
+    })
+}
 
+
+function fetchReaderCommentedBlogs() {
+    $.ajax({
+        type: 'POST',
+        url: '/fetch_reader_commented_blogs/',
+        success: function (response) {
+            if (response.result === 'success') {
+                $('#commented_blogs').empty();
+                response.commentBlogs.forEach(function (blog) {
+                    const commentedBlogs = "<li class='list-group-item'><b><span style='color: orangered'>Blog Title: </span>" + blog.blog_id__blog_name + " | <span style='color: orangered'>Comment: </span>" + blog.comment_text + "</b></li>";
+                    $('#commented_blogs').append(commentedBlogs);
+                });
+            } else if (response.result === 'failed') {
+                swal(response.msg);
+            }
+        }, error: function (error) {
+            console.log('Error in fetchReaderCommentedBlogs function -->', error);
+        }
+    })
 }

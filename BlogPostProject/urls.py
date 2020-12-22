@@ -18,7 +18,7 @@ from django.urls import path
 from blogs import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('signup/', views.signup, name='signup'),
     path('login_operation/', views.login_operation, name='login_operation'),
@@ -39,4 +39,8 @@ urlpatterns = [
          name='fetch_my_comment_history_for_author'),
     path('fetch_top_five_commented_blogs/', views.fetch_top_five_commented_blogs,
          name='fetch_top_five_commented_blogs'),
+    path('fetch_top_five_like_disliked_blogs/', views.fetch_top_five_like_disliked_blogs,
+         name='fetch_top_five_like_disliked_blogs'),
+    path('fetch_reader_commented_blogs/', views.fetch_reader_commented_blogs,
+         name='fetch_reader_commented_blogs'),
 ]
