@@ -22,7 +22,7 @@ Project functionality
 * Then apply migrations and migrate to propagate the changes in your database.
 
 
-# Tools & Technology Used
+# Tools & Technologies Used
 
 * Python
 * Django
