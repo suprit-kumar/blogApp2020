@@ -1,5 +1,8 @@
 # Blog-App
 
+# Short Demo Video
+https://drive.google.com/file/d/1kWIDIXP7ykSoeQBO3rxdWd59pduBO93I/view?usp=sharing
+
 # Project functionality
 ------------------------
 * New Author & Reader (User Reagistration)
