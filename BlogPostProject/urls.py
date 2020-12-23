@@ -29,6 +29,7 @@ urlpatterns = [
     path('save_blog/', views.save_blog, name='save_blog'),
     path('fetch_author_blogs/', views.author_blogs, name='fetch_author_blogs'),
     path('fetch_all_blogs/', views.fetch_all_blogs, name='fetch_all_blogs'),
+    path('fetch_blog_details_for_edit/', views.fetch_blog_details_for_edit, name='fetch_blog_details_for_edit'),
     path('blog_like_dislike/', views.update_blog_like_dislike, name='blog_like_dislike'),
     path('save_reader_comments/', views.save_reader_comments, name='save_reader_comments'),
     path('recent_five_liked_blogs/', views.recent_five_liked_blogs, name='recent_five_liked_blogs'),

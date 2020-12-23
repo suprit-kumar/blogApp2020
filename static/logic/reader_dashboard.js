@@ -112,7 +112,7 @@ function fetchMyRecentFiveLikedBlogs() {
             if (response.result === 'success') {
                 $('#liked_blogs').empty();
                 response.blogs.forEach(function (likedBlog) {
-                    const myLikedBlogs = "<li class='list-group-item'><b>Blog Title: " + likedBlog.blog_id__blog_name + "</b></li>";
+                    const myLikedBlogs = "<li class='list-group-item'><b><span style='color: orangered'>Blog Title: </span>" + likedBlog.blog_id__blog_name + "</b></li>";
                     $('#liked_blogs').append(myLikedBlogs);
                 });
             } else if (response.result === 'failed') {
@@ -133,7 +133,7 @@ function fetchMyCommentedBlogs() {
             if (response.result === 'success') {
                 $('#my_commented_blog').empty();
                 response.commented_blogs.forEach(function (blog) {
-                    const blogs = "<li class='list-group-item'><input class='form-check-input me-1 select_blog' name='select_blog' type='checkbox' id='" + blog.blog_id + "'><b>Blog Title: " + blog.blog_id__blog_name + "</b></li>";
+                    const blogs = "<li class='list-group-item'><input class='form-check-input me-1 select_blog' name='select_blog' type='checkbox' id='" + blog.blog_id + "'><b><span style='color: orangered'>Blog Title: </span>" + blog.blog_id__blog_name + "</b></li>";
                     $('#my_commented_blog').append(blogs);
                 });
             } else if (response.result === 'failed') {
@@ -193,7 +193,7 @@ function fetchMyCommentedBlogsAuthor() {
             if (response.result === 'success') {
                 $('#commented_blogs_authors').empty();
                 response.authorsList.forEach(function (author) {
-                    const authors = "<li class='list-group-item'><input class='form-check-input me-1 select_author' name='select_author' type='checkbox' id='" + author.blog_id__author_id + "'><b>Author: " + author.blog_id__author_id__author_name + "</b></li>";
+                    const authors = "<li class='list-group-item'><input class='form-check-input me-1 select_author' name='select_author' type='checkbox' id='" + author.blog_id__author_id + "'><b><span style='color: orangered'>Author: </span>" + author.blog_id__author_id__author_name + "</b></li>";
                     $('#commented_blogs_authors').append(authors);
                 });
             } else if (response.result === 'failed') {
@@ -230,7 +230,7 @@ function fetchCommentsHistoryForAuhtor(authorId) {
                 $('#auth_blog_comments').empty();
                 $('#auth_blog_comments_count').text(response.blog_comments.length + ' comment');
                 response.blog_comments.forEach(function (comment) {
-                    const history = "<li class='list-group-item'><b>Title: " + comment.blog_id__blog_name + " | Comment:  " + comment.comment_text + "</b></li>";
+                    const history = "<li class='list-group-item'><b><span style='color: orangered'>Title: </span>" + comment.blog_id__blog_name + " | <span style='color: orangered'>Comment:  </span>" + comment.comment_text + "</b></li>";
                     $('#auth_blog_comments').append(history);
                 });
             } else if (response.result === 'failed') {

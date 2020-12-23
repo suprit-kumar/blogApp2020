@@ -190,6 +190,25 @@ def author_blogs(request):
 
 
 @csrf_exempt
+def fetch_blog_details_for_edit(request):
+    try:
+        if 'usercode' in request.session:
+            user_code = request.session['usercode']
+
+            if request.method == 'POST':
+                blogId = request.POST['blogId']
+                author = models.BlogAuthor.objects.get(author_usercode=user_code)
+                blog_details = list(
+                    models.Blog.objects.filter(author_id=author.author_id, blog_id=int(blogId)).values('blog_id',
+                                                                                                       'blog_name',
+                                                                                                       'blog_content'))
+                return JsonResponse({'result': 'success', 'blogDetails': blog_details})
+    except Exception as e:
+        print('Exception in save_blog views.py -->', e)
+        return JsonResponse({'result': 'failed', 'msg': 'Failed to load blogs! Refresh the page'})
+
+
+@csrf_exempt
 def fetch_all_blogs(request):
     try:
         if 'usercode' in request.session:
