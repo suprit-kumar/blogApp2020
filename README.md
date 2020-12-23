@@ -4,7 +4,7 @@
 ------------------------
 * New Author & Reader (User Reagistration)
 * Role based content view
-* Blog create by author
+* Blog create and update by author
 * Author can see his top 5 commented blogs by reader
 * Author can see his top 5 liked and disliked blogs by reader
 * Author can see the comments on his blogs by reader
