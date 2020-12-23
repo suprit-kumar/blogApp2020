@@ -18,7 +18,7 @@ https://drive.google.com/file/d/1kWIDIXP7ykSoeQBO3rxdWd59pduBO93I/view?usp=shari
 # Requirements to run this project locally
 -------------------------------------------
 * Clone the project 
-* Install the requirements which mentioned in requirements.txt file. You can ignore such unnecessary requirements accoring to your environment variable.
+* Install the requirements which mentioned in requirements.txt file. You can ignore such unnecessary requirements according to your environment variable.
 * Install postgreSQL locally
 * Create database in your local
 * Add the database properties in setting.py file
