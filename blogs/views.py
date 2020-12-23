@@ -205,7 +205,7 @@ def fetch_blog_details_for_edit(request):
                 return JsonResponse({'result': 'success', 'blogDetails': blog_details})
     except Exception as e:
         print('Exception in save_blog views.py -->', e)
-        return JsonResponse({'result': 'failed', 'msg': 'Failed to load blogs! Refresh the page'})
+        return JsonResponse({'result': 'failed', 'msg': 'Failed to load blog details! Refresh the page'})
 
 
 @csrf_exempt
