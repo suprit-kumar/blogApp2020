@@ -1,7 +1,7 @@
 # Blog-App
 
-Project functionality
-
+# Project functionality
+------------------------
 * New Author & Reader (User Reagistration)
 * Role based content view
 * Blog create by author
@@ -13,7 +13,7 @@ Project functionality
 * Reader can see his comment history for a particular author
 
 # Requirements to run this project locally
-
+-------------------------------------------
 * Clone the project 
 * Install the requirements which mentioned in requirements.txt file. You can ignore such unneccsary requirements accoring to your environment variable.
 * Install postgreSQL locally
@@ -23,7 +23,7 @@ Project functionality
 
 
 # Tools & Technologies Used
-
+---------------------------
 * Python
 * Django
 * Html
