@@ -13,7 +13,7 @@ class Role(models.Model):
         db_table = "role"
 
     def __unicode__(self):
-        return u'%s' % [self.role_id]
+        return f'{[self.role_id]}'
 
 
 class BlogReader(models.Model):
@@ -27,7 +27,7 @@ class BlogReader(models.Model):
         db_table = "reader"
 
     def __unicode__(self):
-        return u'%s' % [self.reader_id]
+        return f'{[self.reader_id]}'
 
 
 class BlogAuthor(models.Model):
@@ -41,7 +41,7 @@ class BlogAuthor(models.Model):
         db_table = "author"
 
     def __unicode__(self):
-        return u'%s' % [self.author_id]
+        return f'{[self.author_id]}'
 
 
 class Blog(models.Model):
@@ -60,7 +60,7 @@ class Blog(models.Model):
         db_table = "blog"
 
     def __unicode__(self):
-        return u'%s' % [self.blog_id]
+        return f'{[self.blog_id]}'
 
 
 class Comment(models.Model):
@@ -76,7 +76,7 @@ class Comment(models.Model):
         db_table = "comment"
 
     def __unicode__(self):
-        return u'%s' % [self.comment_id]
+        return f'{[self.comment_id]}'
 
 
 class Response(models.Model):
@@ -90,7 +90,7 @@ class Response(models.Model):
         db_table = "response"
 
     def __unicode__(self):
-        return u'%s' % [self.response_id]
+        return f'{[self.response_id]}'
 
 
 class AuthUsers(models.Model):
@@ -107,4 +107,4 @@ class AuthUsers(models.Model):
         db_table = "authenticated_users"
 
     def __unicode__(self):
-        return u'%s' % [self.u_id]
+        return f'{[self.u_id]}'
