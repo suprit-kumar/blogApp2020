@@ -21,8 +21,7 @@ iv = "4tyhuhOXyU&**Q7w".encode('utf-8')
 def encrypt_password(raw_pwd):
     cipher = AES.new(key, AES.MODE_CBC, iv)
     ct_bytes = cipher.encrypt(pad(raw_pwd.encode('utf-8'), AES.block_size))
-    ct = b64encode(ct_bytes).decode('utf-8')
-    return ct
+    return b64encode(ct_bytes).decode('utf-8')
 
 
 # print(encrypt_password('rcpumper@oilfield'))
@@ -46,14 +45,12 @@ def decrypt_password(ency_pwd):
 
 
 def timestampToDate(timestamp):
-    date = datetime.datetime.fromtimestamp(timestamp)
-    return date
+    return datetime.datetime.fromtimestamp(timestamp)
 
 
 def dateToTimestamp():
     dt_obj = datetime.datetime.strptime('20-12-2016 09:38:42,76', '%d-%m-%Y %H:%M:%S,%f')
-    millisec = dt_obj.timestamp() * 1000
-    return millisec
+    return dt_obj.timestamp() * 1000
 
 
 def getUniqueUserCode():
@@ -61,8 +58,10 @@ def getUniqueUserCode():
 
 
 def random_pwd_generate():
-    temp_pwd = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(10))
-    return temp_pwd
+    return ''.join(
+        random.SystemRandom().choice(string.ascii_uppercase + string.digits)
+        for _ in range(10)
+    )
 
 
 def str_to_bool(s):
@@ -74,5 +73,4 @@ def str_to_bool(s):
         raise ValueError
 
 def intersection(lst1, lst2):
-    lst3 = [value for value in lst1 if value in lst2]
-    return lst3
+    return [value for value in lst1 if value in lst2]
